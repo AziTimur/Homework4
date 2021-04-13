@@ -4,47 +4,44 @@ import java.util.Random;
 
 public class Main {
 
-    public static int[] heroesHealth = {270, 280, 250, 300, 600, 200, 230, 300};
+    public static int[] heroesHealth = {270, 280, 250,250,700,220,200,200};
     public static String[] heroesNames = {"Lu Kang ", "Jax ",
-            "Scorpion ", "Medic ", "Golem ", "Lucy ", "Berserk ", "Thor"};
-    public static int[] heroesStrike = {20, 15, 25, 0, 10, 15, 30, 22};
-
+            "Scorpion ", "Medic","Golem","Luky","Berserk","Thor"};
+    public static int[] heroesStrike ={20, 15, 25,0,5,30,15,20};
+    public static boolean isStunds;
     public static String bossName = "Shao Kahn ";
-    public static int bossHealth = 2000;
-    public static int bossStrike = 100;
+    public static int bossHealth = 1000;
+    public static int bossStrike = 50;
     public static String superStrike = "";
     public static int roundNumber = 0;
 
-
     public static void main(String[] args) {
-        // write your code here
-        printStatistics();
+	// write your code here
+
         System.out.println("------The game started-------");
 
-        while (!isGameFinished()) {
+        while (!isGameFinished()){
             round();
         }
     }
 
-    public static void round() {
+    public static void round(){
         roundNumber++;
         System.out.println("-----Round " + roundNumber + "-----");
         superStrike = getSuperStrikeHero();
-
         bossHits();
         heroesHits();
         methodThor();
-        berserk();
+        healingHeroes();
         golemsHits();
         LucyHits();
-
+        berserk();
         printStatistics();
-        healingHeroes();
-
+        isStunds = false;
     }
 
-    public static boolean isGameFinished() {
-        if (bossHealth <= 0) {
+    public static boolean isGameFinished(){
+        if (bossHealth <= 0){
             System.out.println("Heroes won!!! " +
                     "Mortal Kombat finished");
             return true;
@@ -52,73 +49,49 @@ public class Main {
 
         boolean allHeroesDead = true;
 
-        for (int heroHealth : heroesHealth) {
-            if (heroHealth > 0) {
+        for (int heroHealth: heroesHealth) {
+            if (heroHealth > 0){
                 allHeroesDead = false;
                 break;
             }
         }
 
-        if (allHeroesDead) {
+        if (allHeroesDead){
             System.out.println(bossName +
                     " Won!!! Mortal Combat finished");
         }
         return allHeroesDead;
     }
 
-    public static void heroesHits() {
+    public static void heroesHits(){
         Random random = new Random();
         int coeff = random.nextInt(9) + 2;
         for (int i = 0; i < heroesStrike.length; i++) {
-            if (heroesHealth[i] > 0 && bossHealth > 0) {
-                if (superStrike == heroesNames[i]) {
+            if (heroesHealth[i] > 0 && bossHealth > 0){
+                if (superStrike == heroesNames[i]){
                     bossHealth = bossHealth - heroesStrike[i] * coeff;
-                    System.out.println("Super strike damage " +
+                    System.out.println("Super strike damage "+
                             superStrike + " " + (heroesStrike[i] * coeff));
                 } else {
                     bossHealth = bossHealth - heroesStrike[i];
                 }
             }
-            if (bossHealth < 0) {
+            if (bossHealth < 0){
                 bossHealth = 0;
             }
         }
     }
 
-    public static void methodThor() {
-        Random random = new Random();
-        int randomThor = random.nextInt(2);
-        if (randomThor == 1 && heroesHealth[7] > 0) {
-            bossStrike=0;
-          // isStunds=true;
-            System.out.println(heroesNames[7]+" stunds boss");
-        } else {
-            bossStrike=100;
-            System.out.println(heroesNames[7] +" не оглушил удар");
-        }
-    }
-
-    public static boolean isStunds = false;
-
-    public static void bossHits() {
- /*       Random random = new Random();
-        int randomThor = random.nextInt(2);*/
+    public static void bossHits(){
         for (int i = 0; i < heroesHealth.length; i++) {
-                /*if (randomThor == 1&&heroesHealth[7]>=0) {
-                    isStunds=true;
-                    System.out.println("thor stunds boss");
-                    break;
-                }*/
-            if (heroesHealth[i] > 0 && bossHealth > 0) {
+            if (heroesHealth[i] > 0 && bossHealth > 0){
                 heroesHealth[i] = heroesHealth[i] - bossStrike;
             }
-            if (heroesHealth[i] < 0) {
+            if (heroesHealth[i] < 0){
                 heroesHealth[i] = 0;
             }
         }
     }
-
-
     public static void healingHeroes() {
         Random randomMed = new Random();
         int help = randomMed.nextInt(100) + 50;
@@ -131,9 +104,22 @@ public class Main {
                 }
             }
         }
-
     }
 
+    public static void methodThor() {
+        Random random = new Random();
+        int randomThor = random.nextInt(2);
+        if (randomThor == 1 && heroesHealth[7] > 0) {
+            bossStrike=0;
+            isStunds=true;
+            System.out.println(heroesNames[7]+" stunds boss");
+
+        } else {
+            bossStrike=100;
+            isStunds = false;
+            System.out.println(heroesNames[7] +" не оглушил удар");
+        }
+    }
     public static void golemsHits() {
         if (heroesHealth[4] > 100) {
             for (int i = 0; i < heroesHealth.length; i++) {
@@ -145,54 +131,37 @@ public class Main {
             }
         }
     }
-
     public static void LucyHits() {
         Random random = new Random();
-       /* int randomLucy = random.nextInt(bossStrike);
-        heroesHealth[5] += randomLucy;
-        if (heroesHealth[5] > 0) {
-            System.out.println(heroesNames[5] + " уклонялся от удара, " + bossName + " ударил" + (bossStrike - randomLucy));
-        } else {
-            System.out.println(heroesNames[5] + "не уклонялся");
-        }*/
         int randomLucy = random.nextInt(2);
-        if (randomLucy == 1 && !isStunds) {
-            heroesHealth[5] += bossStrike;
-            System.out.println(heroesNames[5] + " уклонился от удара");
-        }
-
-    }
-
-    public static void berserk() {
-       /* if (isStunds = true) {
-            bossStrike = 100;*/
-            Random random = new Random();
-            int randomLucy = random.nextInt(bossStrike);
-
-//            heroesStrike[6] += bossStrike / 2;
-            if (heroesHealth[6] > 0) {
-                heroesHealth[6] += bossStrike - randomLucy;
-                bossHealth -= heroesStrike[6] + (bossStrike - randomLucy);
-                System.out.println(heroesNames[6] + "strike" + randomLucy);
-          /*  System.out.println(heroesNames[6] + " уклонялся от удара, " + bossName + " ударил" + (bossStrike - randomLucy) + " "
-                    + heroesNames[6] + " strike " + heroesStrike[6]);*/
-            } else {
-                System.out.println(heroesNames[6] + " не заблокировал удар");
-
+        //heroesHealth[5] += randomLucy;
+        if (heroesHealth[5] > 0) {
+            if (randomLucy == 1) {
+                heroesHealth[5] += bossStrike;
+                System.out.println("уклонился");
             }
         }
+           // System.out.println(heroesNames[5] + " уклонялся от удара, " + bossName + " ударил" + (bossStrike - randomLucy));
 
-    public static String getSuperStrikeHero() {
+    }
+    public static void berserk() {
+        if (heroesHealth[6] > 0 && !isStunds) {
+            heroesHealth[6] += bossStrike / 2;
+            heroesStrike[6] += bossStrike / 2;
+            System.out.println("Berserk counter attack");
+        }
+    }
+    public static String getSuperStrikeHero(){
         Random random = new Random();
         int randomIndex = random.nextInt(heroesNames.length);
         return heroesNames[randomIndex];
     }
 
-    public static void printStatistics() {
+    public static void printStatistics(){
         System.out.println(bossName + "= health " + bossHealth +
                 " strike [" + bossStrike + "]");
         for (int i = 0; i < heroesNames.length; i++) {
-            System.out.println(heroesNames[i] + "= health                    " +
+            System.out.println(heroesNames[i] + "= health " +
                     heroesHealth[i] + " strike [" +
                     heroesStrike[i] + "]");
         }
